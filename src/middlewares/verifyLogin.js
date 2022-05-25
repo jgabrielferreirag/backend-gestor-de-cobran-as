@@ -14,7 +14,6 @@ const verifyLogin = async (req, res, next) => {
     const token = authorization.split(" ")[1];
 
     const { id } = await jwt.verify(token, process.env.JWT_SECRET);
-
     const signedUser = await connection("users").where({ id }).first();
 
     if (!signedUser) {

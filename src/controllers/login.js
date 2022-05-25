@@ -23,13 +23,13 @@ const login = async (req, res) => {
       return res.status(401).json("Email e/ou senha incorretos");
     }
 
-    const { password: _, ...userData } = userExists;
+    const { id } = userExists;
 
-    const token = jwt.sign(userData, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id }, process.env.JWT_SECRET, {
       expiresIn: "2hr",
     });
 
-    return res.status(200).json({ user: userData, token });
+    return res.status(200).json({ token });
   } catch (error) {
     return res.status(500).json(error.message);
   }
