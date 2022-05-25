@@ -9,6 +9,4 @@ app.use(express.json());
 app.use(cors());
 app.use(routes);
 
-console.log("dasdas");
-
 app.listen(process.env.PORT || 8000);
