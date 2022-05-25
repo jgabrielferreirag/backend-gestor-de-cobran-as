@@ -23,7 +23,7 @@ CREATE TABLE clients (
   state CHAR(2)
 );
 
-CREATE TYPE situation AS ENUM ('Pago', 'Em aberto');
+/* CREATE TYPE situation AS ENUM ('Pago', 'Em aberto'); */
 
 CREATE TABLE bills (
   id UUID PRIMARY KEY,
