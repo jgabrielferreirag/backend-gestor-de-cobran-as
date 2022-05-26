@@ -14,7 +14,7 @@ const registerClient = async (req, res) => {
     state,
   } = req.body;
 
-  if (!name || !email || !cpf || cellphone) {
+  if (!name || !email || !cpf || !cellphone) {
     return res
       .status(404)
       .json("Os campos nome, email, CPF e telefone são obrigatórios");
