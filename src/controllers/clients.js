@@ -36,18 +36,24 @@ const registerClient = async (req, res) => {
       return res.status(404).json("Este CPF já está cadastrado");
     }
 
-    const clientRegistered = await connection("clients").insert({
-      name,
-      email,
-      cpf,
-      cellphone,
-      address,
-      complement,
-      postal_code,
-      district,
-      city,
-      state,
-    });
+    const clientRegistered = await connection("clients")
+      .insert({
+        name,
+        email,
+        cpf,
+        cellphone,
+        address,
+        complement,
+        postal_code,
+        district,
+        city,
+        state,
+      })
+      .returning("*");
+
+    if (!clientRegistered[0]) {
+      return res.status(404).json("Não foi possivel cadastrar o cliente");
+    }
 
     return res.status(200).json("Cliente registrado com sucesso");
   } catch (error) {
