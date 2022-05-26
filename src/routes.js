@@ -5,6 +5,10 @@ const { verifyLogin } = require("./middlewares/verifyLogin");
 
 const router = express();
 
+router.get("/", async (req, res) => {
+  return res.status(200).json("API Backend Bug as a Service");
+});
+
 router.post("/usuario", signUpUser);
 router.post("/login", login);
 
