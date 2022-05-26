@@ -17,11 +17,17 @@ const signUpUser = async (req, res) => {
 
     const hash = await bcrypt.hash(password, parseInt(process.env.SALT_ROUNDS));
 
-    const registerUser = await connection("users").insert({
-      name,
-      email,
-      password: hash,
-    });
+    const registeredUser = await connection("users")
+      .insert({
+        name,
+        email,
+        password: hash,
+      })
+      .returning("*");
+
+    if (!registeredUser[0]) {
+      return res.status(404).json("Não foi possivel cadastrar o usuario");
+    }
 
     return res.status(200).json("Usuario cadastrado com sucesso");
   } catch (error) {
@@ -56,7 +62,12 @@ const editUser = async (req, res) => {
 
     const editedUser = await connection("users")
       .update({ name, email, cpf, password: hash, cellphone })
-      .where({ id: user.id });
+      .where({ id: user.id })
+      .returning("*");
+
+    if (!editedUser[0]) {
+      return res.status(404).json("Não foi possivel editar o usuario");
+    }
 
     return res.status(200).json("Usuario atualizado com sucesso");
   } catch (error) {
