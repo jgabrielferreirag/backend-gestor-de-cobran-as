@@ -14,7 +14,7 @@ const registerClient = async (req, res) => {
     state,
   } = req.body;
 
-  if (!name || !email || !cpf || cellphone) {
+  if (!name || !email || !cpf || !cellphone) {
     return res
       .status(404)
       .json("Os campos nome, email, CPF e telefone são obrigatórios");
@@ -61,6 +61,19 @@ const registerClient = async (req, res) => {
   }
 };
 
+const listAllClients = async (req, res) => {
+  try {
+    const clientsList = await connection("clients")
+      .select("name", "cpf", "email", "cellphone")
+      .returning("*");
+
+    return res.status(200).json(clientsList);
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
+};
+
 module.exports = {
   registerClient,
+  listAllClients,
 };
