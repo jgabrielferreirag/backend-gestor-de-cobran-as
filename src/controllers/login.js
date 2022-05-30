@@ -1,6 +1,7 @@
 const connection = require("../services/database/connection");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { returnInitials } = require("../utils/nameManipulation");
 
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -24,12 +25,13 @@ const login = async (req, res) => {
     }
 
     const { password: _, ...userData } = userExists;
+    const { firstName, initials } = returnInitials(userData.name);
 
     const token = jwt.sign({ id: userData.id }, process.env.JWT_SECRET, {
       expiresIn: "2hr",
     });
 
-    return res.status(200).json({ userData, token });
+    return res.status(200).json({ userData, firstName, initials, token });
   } catch (error) {
     return res.status(500).json(error.message);
   }
