@@ -2,10 +2,14 @@ const connection = require("../services/database/connection");
 const bcrypt = require("bcrypt");
 
 const signUpUser = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, repeatPassword } = req.body;
 
-  if (!name || !email || !password) {
+  if (!name || !email || !password || !repeatPassword) {
     return res.status(404).json("Todos os campos são obrigatórios");
+  }
+
+  if (password !== repeatPassword) {
+    return res.status(404).json("As senhas não conferem");
   }
 
   try {
