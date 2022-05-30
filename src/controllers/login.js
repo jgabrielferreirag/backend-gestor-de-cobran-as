@@ -24,14 +24,14 @@ const login = async (req, res) => {
       return res.status(404).json("Email e/ou senha incorretos");
     }
 
-    const { password: _, ...userData } = userExists;
-    const { firstName, initials } = returnInitials(userData.name);
+    const { id, name } = userExists;
+    const { firstName, initials } = returnInitials(name);
 
-    const token = jwt.sign({ id: userData.id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id }, process.env.JWT_SECRET, {
       expiresIn: "2hr",
     });
 
-    return res.status(200).json({ userData, firstName, initials, token });
+    return res.status(200).json({ firstName, initials, token });
   } catch (error) {
     return res.status(500).json(error.message);
   }

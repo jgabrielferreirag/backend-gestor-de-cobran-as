@@ -79,7 +79,13 @@ const editUser = async (req, res) => {
   }
 };
 
+const getUserById = async (req, res) => {
+  const { user } = req;
+  return res.json(user);
+};
+
 module.exports = {
   signUpUser,
   editUser,
+  getUserById,
 };
