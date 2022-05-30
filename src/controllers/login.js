@@ -8,20 +8,20 @@ const login = async (req, res) => {
 
   if (!email || !password) {
     return res
-      .status(404)
+      .status(400)
       .json("É necessário informar email e senha para acessar");
   }
 
   try {
     const userExists = await connection("users").where({ email }).first();
     if (!userExists) {
-      return res.status(401).json("Email e/ou senha incorretos");
+      return res.status(404).json("Email e/ou senha incorretos");
     }
 
     const passwordMatch = await bcrypt.compare(password, userExists.password);
 
     if (!passwordMatch) {
-      return res.status(401).json("Email e/ou senha incorretos");
+      return res.status(404).json("Email e/ou senha incorretos");
     }
 
     const { password: _, ...userData } = userExists;

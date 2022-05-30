@@ -5,18 +5,18 @@ const signUpUser = async (req, res) => {
   const { name, email, password, repeatPassword } = req.body;
 
   if (!name || !email || !password || !repeatPassword) {
-    return res.status(404).json("Todos os campos são obrigatórios");
+    return res.status(400).json("Todos os campos são obrigatórios");
   }
 
   if (password !== repeatPassword) {
-    return res.status(404).json("As senhas não conferem");
+    return res.status(400).json("As senhas não conferem");
   }
 
   try {
     const alreadyExists = await connection("users").where({ email }).first();
 
     if (alreadyExists) {
-      return res.status(404).json("Este email já esta sendo utilizado");
+      return res.status(400).json("Este email já esta sendo utilizado");
     }
 
     const hash = await bcrypt.hash(password, parseInt(process.env.SALT_ROUNDS));
@@ -30,7 +30,7 @@ const signUpUser = async (req, res) => {
       .returning("*");
 
     if (!registeredUser[0]) {
-      return res.status(404).json("Não foi possivel cadastrar o usuario");
+      return res.status(400).json("Não foi possivel cadastrar o usuario");
     }
 
     return res.status(200).json("Usuario cadastrado com sucesso");
@@ -47,14 +47,14 @@ const editUser = async (req, res) => {
     if (email && email !== user.email) {
       const alreadyExists = await connection("users").where({ email }).first();
       if (alreadyExists) {
-        return res.status(404).json("Email ja cadastrado");
+        return res.status(400).json("Email ja cadastrado");
       }
     }
 
     if (cpf && cpf !== user.cpf) {
       const alreadyExists = await connection("users").where({ cpf }).first();
       if (alreadyExists) {
-        return res.status(404).json("CPF ja cadastrado");
+        return res.status(400).json("CPF ja cadastrado");
       }
     }
 
@@ -70,7 +70,7 @@ const editUser = async (req, res) => {
       .returning("*");
 
     if (!editedUser[0]) {
-      return res.status(404).json("Não foi possivel editar o usuario");
+      return res.status(400).json("Não foi possivel editar o usuario");
     }
 
     return res.status(200).json("Usuario atualizado com sucesso");
