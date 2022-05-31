@@ -1,18 +1,13 @@
 const connection = require("../services/database/connection");
 const bcrypt = require("bcrypt");
+const schemaSignUpUser = require("../validations/schemaSignUpUser");
 
 const signUpUser = async (req, res) => {
-  const { name, email, password, repeatPassword } = req.body;
-
-  if (!name || !email || !password || !repeatPassword) {
-    return res.status(400).json("Todos os campos são obrigatórios");
-  }
-
-  if (password !== repeatPassword) {
-    return res.status(400).json("As senhas não conferem");
-  }
-
   try {
+    await schemaSignUpUser.validate(req.body);
+
+    const { name, email, password } = req.body;
+
     const alreadyExists = await connection("users").where({ email }).first();
 
     if (alreadyExists) {
@@ -35,7 +30,7 @@ const signUpUser = async (req, res) => {
 
     return res.status(200).json("Usuario cadastrado com sucesso");
   } catch (error) {
-    return res.status(500).json(error.message);
+    return res.status(400).json(error.message);
   }
 };
 
