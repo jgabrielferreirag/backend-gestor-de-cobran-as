@@ -9,6 +9,8 @@ CREATE TABLE users (
   cellphone VARCHAR(14)
 );
 
+/* CREATE TYPE client_situation AS ENUM ('Em dia', 'Inadimplente'); */
+
 CREATE TABLE clients (
   id SERIAL PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
@@ -20,7 +22,8 @@ CREATE TABLE clients (
   postal_code VARCHAR(8),
   district VARCHAR(50),
   city VARCHAR(30),
-  state CHAR(2)
+  state CHAR(2),
+  status client_situation DEFAULT 'Em dia'
 );
 
 /* CREATE TYPE situation AS ENUM ('Pago', 'Em aberto'); */

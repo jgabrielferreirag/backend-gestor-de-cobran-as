@@ -73,7 +73,20 @@ const listAllClients = async (req, res) => {
   }
 };
 
+const getClientById = async (req, res) => {
+  const { clientId } = req.params;
+  try {
+    const client = await connection("clients").where({ id: clientId }).first();
+    if (!client) {
+      return res.status(404).json(`Cliente com ID ${clientId} inexistente`);
+    }
+    return res.json(client);
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
+};
 module.exports = {
   registerClient,
   listAllClients,
+  getClientById,
 };
