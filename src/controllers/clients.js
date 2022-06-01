@@ -1,4 +1,5 @@
 const connection = require("../services/database/connection");
+const schemaEditClient = require("../validations/schemaEditClient");
 
 const registerClient = async (req, res) => {
   const {
@@ -85,8 +86,64 @@ const getClientById = async (req, res) => {
     return res.status(500).json(error.message);
   }
 };
+
+const editClient = async (req, res) => {
+  const { clientId } = req.params;
+  try {
+    await schemaEditClient.validate(req.body);
+
+    const {
+      name,
+      email,
+      cpf,
+      cellphone,
+      address,
+      complement,
+      postal_code,
+      district,
+      city,
+      state,
+    } = req.body;
+    const alreadyExists = await connection("clients")
+      .where({ email })
+      .orWhere({ cpf })
+      .first();
+
+    if (alreadyExists && alreadyExists.id !== parseInt(clientId)) {
+      return res
+        .status(401)
+        .json("Ja existe um cliente cadastrado com esses dados");
+    }
+
+    const clientUpdated = await connection("clients")
+      .update({
+        name,
+        email,
+        cpf,
+        cellphone,
+        address,
+        complement,
+        postal_code,
+        district,
+        city,
+        state,
+      })
+      .where({ id: clientId })
+      .returning("*");
+
+    if (!clientUpdated) {
+      return res.status(400).json("Não foi possivel cadastrar o cliente");
+    }
+
+    return res.json("Cliente atualizado com sucesso");
+  } catch (error) {
+    return res.status(400).json(error.message);
+  }
+};
+
 module.exports = {
   registerClient,
   listAllClients,
   getClientById,
+  editClient,
 };

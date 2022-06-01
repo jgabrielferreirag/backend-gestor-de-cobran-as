@@ -6,6 +6,7 @@ const {
   registerClient,
   listAllClients,
   getClientById,
+  editClient,
 } = require("./controllers/clients");
 
 const router = express();
@@ -20,5 +21,6 @@ router.get("/usuario", getUserById);
 router.post("/cliente", registerClient);
 router.get("/clientes", listAllClients);
 router.get("/clientes/:clientId", getClientById);
+router.put("/clientes/:clientId", editClient);
 
 module.exports = router;
