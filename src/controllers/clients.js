@@ -65,7 +65,7 @@ const registerClient = async (req, res) => {
 const listAllClients = async (req, res) => {
   try {
     const clientsList = await connection("clients")
-      .select("name", "cpf", "email", "cellphone")
+      .select("id", "name", "cpf", "email", "cellphone")
       .returning("*");
 
     return res.status(200).json(clientsList);
