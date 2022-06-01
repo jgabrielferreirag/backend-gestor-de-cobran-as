@@ -7,7 +7,7 @@ const returnInitials = (name) => {
     initials = (nameList[0].charAt(0) + nameList[1].charAt(0)).toUpperCase();
   }
 
-  const firstName = nameList[0];
+  const firstName = nameList[0].charAt(0).toUpperCase() + nameList[0].slice(1);
   return { firstName, initials };
 };
 
