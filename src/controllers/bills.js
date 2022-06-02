@@ -1,6 +1,7 @@
 const connection = require("../services/database/connection");
 const schemaRegisterBill = require("../validations/schemaRegisterBill");
 const generateId = require("../utils/billIdGenerator");
+const dateFormatting = require("../utils/dateFormatting");
 
 const registerBill = async (req, res) => {
   const { clientId } = req.params;
@@ -33,4 +34,17 @@ const registerBill = async (req, res) => {
   }
 };
 
-module.exports = { registerBill };
+const listClientBills = async (req, res) => {
+  const { clientId } = req.params;
+  try {
+    const clientBills = await connection("bills").where({
+      client_id: clientId,
+    });
+
+    return res.json(dateFormatting(clientBills));
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
+};
+
+module.exports = { registerBill, listClientBills };

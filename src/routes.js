@@ -8,7 +8,7 @@ const {
   getClientById,
   editClient,
 } = require("./controllers/clients");
-const { registerBill } = require("./controllers/bills");
+const { registerBill, listClientBills } = require("./controllers/bills");
 
 const router = express();
 
@@ -24,5 +24,6 @@ router.get("/clientes", listAllClients);
 router.get("/clientes/:clientId", getClientById);
 router.put("/clientes/:clientId", editClient);
 router.post("/clientes/:clientId/cobrancas", registerBill);
+router.get("/clientes/:clientId/cobrancas", listClientBills);
 
 module.exports = router;
