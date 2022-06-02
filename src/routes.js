@@ -8,22 +8,29 @@ const {
   getClientById,
   editClient,
 } = require("./controllers/clients");
-const { registerBill, listClientBills } = require("./controllers/bills");
+const {
+  registerBill,
+  listClientBills,
+  listAllBills,
+} = require("./controllers/bills");
 
 const router = express();
 
-router.post("/usuario", signUpUser);
-router.post("/login", login);
+router.post("/usuario", signUpUser); //cadastrar usuario
+router.post("/login", login); //logar usuario
 
-router.use(verifyLogin);
+router.use(verifyLogin); //middleware de verificação de autenticação
 
-router.put("/usuario", editUser);
-router.get("/usuario", getUserById);
-router.post("/cliente", registerClient);
-router.get("/clientes", listAllClients);
-router.get("/clientes/:clientId", getClientById);
-router.put("/clientes/:clientId", editClient);
-router.post("/clientes/:clientId/cobrancas", registerBill);
-router.get("/clientes/:clientId/cobrancas", listClientBills);
+router.put("/usuario", editUser); //editar usuario
+router.get("/usuario", getUserById); //listar dados do usuario
+
+router.post("/cliente", registerClient); //cadastrar cliente
+router.get("/clientes", listAllClients); //listar todos os clientes
+router.get("/clientes/:clientId", getClientById); //listar dados de cliente especifico pelo ID
+router.put("/clientes/:clientId", editClient); //editar dados de cliente especifico pelo ID
+router.post("/clientes/:clientId/cobrancas", registerBill); //cadastrar cobrança
+router.get("/clientes/:clientId/cobrancas", listClientBills); //listar todas as cobranças de um cliente especifico
+
+router.get("/cobrancas", listAllBills); //listar todas as cobranças da empresa
 
 module.exports = router;
