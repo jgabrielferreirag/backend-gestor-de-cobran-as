@@ -26,14 +26,14 @@ CREATE TABLE clients (
   status client_situation DEFAULT 'Em dia'
 );
 
-/* CREATE TYPE situation AS ENUM ('Pago', 'Pendente', 'Vencida); */
+/* CREATE TYPE situation AS ENUM ('Paga', 'Pendente', 'Vencida'); */
 
 CREATE TABLE bills (
   id INT PRIMARY KEY,
   client_id INT REFERENCES clients (id) NOT NULL,
   value NUMERIC NOT NULL,
   due_date DATE NOT NULL,
-  status situation DEFAULT 'Em aberto',
+  status situation DEFAULT 'Pendente',
   description text NOT NULL
 );
 

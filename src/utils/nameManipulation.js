@@ -11,4 +11,4 @@ const returnInitials = (name) => {
   return { firstName, initials };
 };
 
-module.exports = { returnInitials };
+module.exports = returnInitials;

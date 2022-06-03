@@ -1,6 +1,7 @@
 const connection = require("../services/database/connection");
 const schemaEditClient = require("../validations/schemaEditClient");
 const schemaRegisterClient = require("../validations/SchemaRegisterClient");
+const formatCellphone = require("../utils/cellphoneFormatting");
 
 const registerClient = async (req, res) => {
   try {
@@ -63,7 +64,6 @@ const listAllClients = async (req, res) => {
     const clientsList = await connection("clients")
       .select("id", "name", "cpf", "email", "cellphone", "client_status")
       .returning("*");
-
     return res.status(200).json(clientsList);
   } catch (error) {
     return res.status(500).json(error.message);
@@ -74,9 +74,13 @@ const getClientById = async (req, res) => {
   const { clientId } = req.params;
   try {
     const client = await connection("clients").where({ id: clientId }).first();
+
     if (!client) {
       return res.status(404).json(`Cliente com ID ${clientId} inexistente`);
     }
+
+    const formattedCellphone = formatCellphone(client.cellphone);
+    client.cellphone = formattedCellphone;
     return res.json(client);
   } catch (error) {
     return res.status(500).json(error.message);
@@ -87,9 +91,15 @@ const editClient = async (req, res) => {
   const { clientId } = req.params;
 
   try {
-    await schemaEditClient.validate(req.body);
+    const clientExists = await connection("clients")
+      .where({ id: clientId })
+      .first();
 
-    /* const bodyFormatted = removeEmptyStrings(req.body); */
+    if (!clientExists) {
+      return res.status(404).json(`O cliente com ID ${clientId} não existe`);
+    }
+
+    await schemaEditClient.validate(req.body);
 
     const {
       name,
@@ -132,7 +142,9 @@ const editClient = async (req, res) => {
       .returning("*");
 
     if (!clientUpdated) {
-      return res.status(400).json("Não foi possivel cadastrar o cliente");
+      return res
+        .status(400)
+        .json("Não foi possivel atualizar os dados do cliente");
     }
 
     return res.json("Cliente atualizado com sucesso");

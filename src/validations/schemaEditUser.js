@@ -3,7 +3,7 @@ const yup = require("yup");
 const schema = yup.object().shape({
   cellphone: yup.string().matches(/^(|.{11,11})$/, {
     excludeEmptyString: true,
-    message: "O CPF deve ter onze caractéres",
+    message: "O celular deve ter onze caractéres",
   }),
   cpf: yup.string().matches(/^(|.{11,11})$/, {
     excludeEmptyString: true,

@@ -68,7 +68,7 @@ const editUser = async (req, res) => {
       .returning("*");
 
     if (!editedUser[0]) {
-      return res.status(400).json("Não foi possivel editar o usuario");
+      return res.status(400).json("Não foi possivel editar dados do usuario");
     }
 
     return res.status(200).json("Usuario atualizado com sucesso");

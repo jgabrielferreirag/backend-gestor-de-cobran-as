@@ -25,8 +25,6 @@ const registerBill = async (req, res) => {
     const formattedDate =
       splitDate[2] + "-" + splitDate[1] + "-" + splitDate[0];
 
-    console.log(formattedDate);
-
     const billRegistered = await connection("bills").insert({
       id,
       client_id: clientId,

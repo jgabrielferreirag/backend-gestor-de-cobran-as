@@ -1,19 +1,17 @@
 const connection = require("../services/database/connection");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { returnInitials } = require("../utils/nameManipulation");
+const returnInitials = require("../utils/nameManipulation");
+const schemaLoginUser = require("../validations/schemaLoginUser");
 
 const login = async (req, res) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res
-      .status(400)
-      .json("É necessário informar email e senha para acessar");
-  }
-
   try {
+    await schemaLoginUser.validate(req.body);
+
+    const { email, password } = req.body;
+
     const userExists = await connection("users").where({ email }).first();
+
     if (!userExists) {
       return res.status(404).json("Email e/ou senha incorretos");
     }
