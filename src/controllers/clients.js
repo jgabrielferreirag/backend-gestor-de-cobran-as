@@ -1,5 +1,6 @@
 const connection = require("../services/database/connection");
 const schemaEditClient = require("../validations/schemaEditClient");
+const removeEmptyStrings = require("../utils/removeEmptyStrings");
 
 const registerClient = async (req, res) => {
   const {
@@ -89,8 +90,11 @@ const getClientById = async (req, res) => {
 
 const editClient = async (req, res) => {
   const { clientId } = req.params;
+
   try {
     await schemaEditClient.validate(req.body);
+
+    const bodyFormatted = removeEmptyStrings(req.body);
 
     const {
       name,
@@ -103,7 +107,7 @@ const editClient = async (req, res) => {
       district,
       city,
       state,
-    } = req.body;
+    } = bodyFormatted;
 
     const alreadyExists = await connection("clients")
       .where({ email })
