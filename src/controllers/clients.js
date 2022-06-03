@@ -65,7 +65,7 @@ const registerClient = async (req, res) => {
 const listAllClients = async (req, res) => {
   try {
     const clientsList = await connection("clients")
-      .select("id", "name", "cpf", "email", "cellphone")
+      .select("id", "name", "cpf", "email", "cellphone", "client_status")
       .returning("*");
 
     return res.status(200).json(clientsList);
@@ -104,6 +104,7 @@ const editClient = async (req, res) => {
       city,
       state,
     } = req.body;
+
     const alreadyExists = await connection("clients")
       .where({ email })
       .orWhere({ cpf })

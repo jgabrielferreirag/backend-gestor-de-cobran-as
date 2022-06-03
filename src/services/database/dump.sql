@@ -31,7 +31,7 @@ CREATE TABLE clients (
 CREATE TABLE bills (
   id INT PRIMARY KEY,
   client_id INT REFERENCES clients (id) NOT NULL,
-  value INTEGER NOT NULL,
+  value NUMERIC NOT NULL,
   due_date DATE NOT NULL,
   status situation DEFAULT 'Em aberto',
   description text NOT NULL

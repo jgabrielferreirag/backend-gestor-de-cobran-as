@@ -3,19 +3,25 @@ const schemaRegisterBill = require("../validations/schemaRegisterBill");
 const generateId = require("../utils/billIdGenerator");
 const dateFormatting = require("../utils/dateFormatting");
 const currencyFormatting = require("../utils/currencyFormatting");
+const { format } = require("date-fns");
 
 const registerBill = async (req, res) => {
   const { clientId } = req.params;
+
   try {
     await schemaRegisterBill.validate(req.body);
+
     const { value, description, due_date, status } = req.body;
+
     let id = generateId();
     while (true) {
       const repeatedId = await connection("bills").where({ id }).first();
       if (!repeatedId) {
         break;
       }
+      id = generateId();
     }
+
     const billRegistered = await connection("bills").insert({
       id,
       client_id: clientId,
@@ -38,11 +44,13 @@ const registerBill = async (req, res) => {
 const listClientBills = async (req, res) => {
   const { clientId } = req.params;
   try {
-    const clientBills = await connection("bills").where({
-      client_id: clientId,
-    });
+    const clientBills = await connection("bills")
+      .where({
+        client_id: clientId,
+      })
+      .select("id", "value", "due_date", "status", "description");
 
-    return res.json(dateFormatting(clientBills));
+    return res.json(currencyFormatting(dateFormatting(clientBills)));
   } catch (error) {
     return res.status(500).json(error.message);
   }
