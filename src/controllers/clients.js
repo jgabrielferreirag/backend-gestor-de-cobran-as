@@ -1,28 +1,23 @@
 const connection = require("../services/database/connection");
 const schemaEditClient = require("../validations/schemaEditClient");
-const removeEmptyStrings = require("../utils/removeEmptyStrings");
+const schemaRegisterClient = require("../validations/SchemaRegisterClient");
 
 const registerClient = async (req, res) => {
-  const {
-    name,
-    email,
-    cpf,
-    cellphone,
-    address,
-    complement,
-    postal_code,
-    district,
-    city,
-    state,
-  } = req.body;
-
-  if (!name || !email || !cpf || !cellphone) {
-    return res
-      .status(400)
-      .json("Os campos nome, email, CPF e telefone são obrigatórios");
-  }
-
   try {
+    await schemaRegisterClient.validate(req.body);
+    const {
+      name,
+      email,
+      cpf,
+      cellphone,
+      address,
+      complement,
+      postal_code,
+      district,
+      city,
+      state,
+    } = req.body;
+
     const emailAlreadyUsed = await connection("clients")
       .where({ email })
       .first();
@@ -94,7 +89,7 @@ const editClient = async (req, res) => {
   try {
     await schemaEditClient.validate(req.body);
 
-    const bodyFormatted = removeEmptyStrings(req.body);
+    /* const bodyFormatted = removeEmptyStrings(req.body); */
 
     const {
       name,
@@ -107,7 +102,7 @@ const editClient = async (req, res) => {
       district,
       city,
       state,
-    } = bodyFormatted;
+    } = req.body;
 
     const alreadyExists = await connection("clients")
       .where({ email })
@@ -122,13 +117,13 @@ const editClient = async (req, res) => {
 
     const clientUpdated = await connection("clients")
       .update({
-        name,
-        email,
+        name: name ? name : null,
+        email: email ? email : null,
         cpf,
         cellphone,
         address,
         complement,
-        postal_code,
+        postal_code: postal_code ? postal_code : null,
         district,
         city,
         state,

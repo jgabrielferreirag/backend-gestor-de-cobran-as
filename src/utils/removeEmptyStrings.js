@@ -1,13 +1,14 @@
 const removeEmptyStrings = (object) => {
-  const objectArray = Object.entries(object);
+  const newObject = object;
+  const objectArray = Object.entries(newObject);
 
   for (pair of objectArray) {
     if (pair[1] === "") {
-      object.pair[0] = null;
+      newObject.pair[0] = undefined;
     }
   }
 
-  return object;
+  return newObject;
 };
 
 module.exports = removeEmptyStrings;

@@ -3,7 +3,6 @@ const schemaRegisterBill = require("../validations/schemaRegisterBill");
 const generateId = require("../utils/billIdGenerator");
 const dateFormatting = require("../utils/dateFormatting");
 const currencyFormatting = require("../utils/currencyFormatting");
-const { format } = require("date-fns");
 
 const registerBill = async (req, res) => {
   const { clientId } = req.params;
@@ -22,12 +21,18 @@ const registerBill = async (req, res) => {
       id = generateId();
     }
 
+    const splitDate = due_date.split("/");
+    const formattedDate =
+      splitDate[2] + "-" + splitDate[1] + "-" + splitDate[0];
+
+    console.log(formattedDate);
+
     const billRegistered = await connection("bills").insert({
       id,
       client_id: clientId,
       value,
       description,
-      due_date,
+      due_date: formattedDate,
       status,
     });
 

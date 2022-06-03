@@ -3,7 +3,7 @@ const yup = require("yup");
 const schema = yup.object().shape({
   repeatPassword: yup
     .string()
-    .required("O campo é obrigatório")
+    .required("É necessário repetir a senha")
     .test("Confere", "As senhas não conferem", function (repeatPassword) {
       return repeatPassword === this.parent.password;
     }),

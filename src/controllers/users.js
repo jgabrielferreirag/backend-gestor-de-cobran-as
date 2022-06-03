@@ -1,6 +1,7 @@
 const connection = require("../services/database/connection");
 const bcrypt = require("bcrypt");
 const schemaSignUpUser = require("../validations/schemaSignUpUser");
+const schemaEditUser = require("../validations/schemaEditUser");
 
 const signUpUser = async (req, res) => {
   try {
@@ -35,18 +36,20 @@ const signUpUser = async (req, res) => {
 };
 
 const editUser = async (req, res) => {
-  const { user } = req;
-  const { name, email, cpf, password, cellphone } = req.body;
-
   try {
-    if (email && email !== user.email) {
+    await schemaEditUser.validate(req.body);
+
+    const { user } = req;
+    const { name, email, cpf, password, cellphone } = req.body;
+
+    if (email !== user.email) {
       const alreadyExists = await connection("users").where({ email }).first();
       if (alreadyExists) {
         return res.status(400).json("Email ja cadastrado");
       }
     }
 
-    if (cpf && cpf !== user.cpf) {
+    if (cpf !== user.cpf) {
       const alreadyExists = await connection("users").where({ cpf }).first();
       if (alreadyExists) {
         return res.status(400).json("CPF ja cadastrado");
