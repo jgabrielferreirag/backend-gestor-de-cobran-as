@@ -14,7 +14,7 @@ const schema = yup.object().shape({
   cellphone: yup.string().required("O campo celular é obrigatório"),
   cpf: yup
     .string()
-    .matches(/^(|.{2,2})$/, "O CPF deve ter onze caractéres")
+    .matches(/^(|.{11,11})$/, "O CPF deve ter onze caractéres")
     .required("O campo CPF é obrigatório"),
   email: yup
     .string()
