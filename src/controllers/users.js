@@ -2,6 +2,7 @@ const connection = require("../services/database/connection");
 const bcrypt = require("bcrypt");
 const schemaSignUpUser = require("../validations/schemaSignUpUser");
 const schemaEditUser = require("../validations/schemaEditUser");
+const returnInitials = require("../utils/nameManipulation");
 
 const signUpUser = async (req, res) => {
   try {
@@ -71,7 +72,11 @@ const editUser = async (req, res) => {
       return res.status(400).json("Não foi possivel editar dados do usuario");
     }
 
-    return res.status(200).json("Usuario atualizado com sucesso");
+    const { firstName, initials } = returnInitials(editedUser[0].name);
+
+    return res
+      .status(200)
+      .json({ message: "Usuario atualizado com sucesso", firstName, initials });
   } catch (error) {
     return res.status(500).json(error.message);
   }
