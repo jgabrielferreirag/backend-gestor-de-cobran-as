@@ -50,7 +50,7 @@ const editUser = async (req, res) => {
       }
     }
 
-    if (cpf !== user.cpf) {
+    if (cpf !== user.cpf && cpf !== "") {
       const alreadyExists = await connection("users").where({ cpf }).first();
       if (alreadyExists) {
         return res.status(400).json("CPF ja cadastrado");
