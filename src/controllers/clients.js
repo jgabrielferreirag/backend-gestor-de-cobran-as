@@ -64,6 +64,11 @@ const listAllClients = async (req, res) => {
     const clientsList = await connection("clients")
       .select("id", "name", "cpf", "email", "cellphone", "client_status")
       .returning("*");
+
+    clientsList.forEach((client) => {
+      client.cellphone = formatCellphone(client.cellphone);
+    });
+
     return res.status(200).json(clientsList);
   } catch (error) {
     return res.status(500).json(error.message);
