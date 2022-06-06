@@ -128,16 +128,16 @@ const editClient = async (req, res) => {
 
     const clientUpdated = await connection("clients")
       .update({
-        name: name ? name : null,
-        email: email ? email : null,
+        name,
+        email,
         cpf,
         cellphone,
-        address,
-        complement,
+        address: address ? address : null,
+        complement: complement ? complement : null,
         postal_code: postal_code ? postal_code : null,
-        district,
-        city,
-        state,
+        district: district ? district : null,
+        city: city ? city : null,
+        state: state ? state : null,
       })
       .where({ id: clientId })
       .returning("*");

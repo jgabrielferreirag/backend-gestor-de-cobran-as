@@ -64,7 +64,13 @@ const editUser = async (req, res) => {
     }
 
     const editedUser = await connection("users")
-      .update({ name, email, cpf, password: hash, cellphone })
+      .update({
+        name,
+        email,
+        cpf: cpf ? cpf : null,
+        password: hash,
+        cellphone: cellphone ? cellphone : null,
+      })
       .where({ id: user.id })
       .returning("*");
 
