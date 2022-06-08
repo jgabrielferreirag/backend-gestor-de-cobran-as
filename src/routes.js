@@ -12,6 +12,7 @@ const {
   registerBill,
   listClientBills,
   listAllBills,
+  deleteBill,
 } = require("./controllers/bills");
 
 const router = express();
@@ -36,5 +37,6 @@ router.post("/clientes/:clientId/cobrancas", registerBill); //cadastrar cobranç
 router.get("/clientes/:clientId/cobrancas", listClientBills); //listar todas as cobranças de um cliente especifico
 
 router.get("/cobrancas", listAllBills); //listar todas as cobranças da empresa
+router.delete("/cobrancas/:billId", deleteBill);
 
 module.exports = router;

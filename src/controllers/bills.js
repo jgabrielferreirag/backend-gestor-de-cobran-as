@@ -77,4 +77,24 @@ const listAllBills = async (req, res) => {
   }
 };
 
-module.exports = { registerBill, listClientBills, listAllBills };
+const deleteBill = async (req, res) => {
+  const { billId } = req.params;
+  try {
+    const deletedBill = await connection("bills")
+      .delete()
+      .where({ id: billId })
+      .andWhere({ status: "Pendente" })
+      .andWhere("due_date", ">=", "NOW()")
+      .returning("*");
+
+    if (!deletedBill[0]) {
+      return res.status(400).json("Não foi possivel deletar a cobrança");
+    }
+
+    return res.json("Cobrança excluída com sucesso");
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
+};
+
+module.exports = { registerBill, listClientBills, listAllBills, deleteBill };
