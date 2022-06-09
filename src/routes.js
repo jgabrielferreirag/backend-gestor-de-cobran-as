@@ -14,6 +14,7 @@ const {
   listAllBills,
   deleteBill,
   getBillById,
+  editBill,
 } = require("./controllers/bills");
 
 const router = express();
@@ -38,7 +39,8 @@ router.post("/clientes/:clientId/cobrancas", registerBill); //cadastrar cobranç
 router.get("/clientes/:clientId/cobrancas", listClientBills); //listar todas as cobranças de um cliente especifico
 
 router.get("/cobrancas", listAllBills); //listar todas as cobranças da empresa
-router.delete("/cobrancas/:billId", deleteBill);
-router.get("/cobrancas/:billId", getBillById);
+router.delete("/cobrancas/:billId", deleteBill); //deletar cobrança pelo billId
+router.get("/cobrancas/:billId", getBillById); // listar dados da cobrança pelo billId
+router.put("/cobrancas/:billId", editBill); // editar dados da cobrança pelo billId
 
 module.exports = router;

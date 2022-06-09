@@ -1,5 +1,6 @@
 const connection = require("../services/database/connection");
 const schemaRegisterBill = require("../validations/schemaRegisterBill");
+const schemaEditBill = require("../validations/schemaEditBill");
 const generateId = require("../utils/billIdGenerator");
 const dateFormatting = require("../utils/dateFormatting");
 const currencyFormatting = require("../utils/currencyFormatting");
@@ -115,7 +116,26 @@ const getBillById = async (req, res) => {
     if (!bill[0]) {
       return res.status(404).json("Cobrança inexistente");
     }
-    return res.json(dateFormatting(bill));
+    return res.json(currencyFormatting(dateFormatting(bill))[0]);
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
+};
+
+const editBill = async (req, res) => {
+  try {
+    await schemaEditBill.validate(req.body);
+    const { billId } = req.params;
+    const { status, due_date, description, value } = req.body;
+    const editedBill = await connection("bills")
+      .update({
+        status,
+        due_date,
+        description,
+        value,
+      })
+      .where({ id: billId });
+    return res.json("Boleto atualizado com sucesso");
   } catch (error) {
     return res.status(500).json(error.message);
   }
@@ -127,4 +147,5 @@ module.exports = {
   listAllBills,
   deleteBill,
   getBillById,
+  editBill,
 };

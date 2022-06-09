@@ -2,16 +2,22 @@ const cronJob = require("node-cron");
 const connection = require("../database/connection");
 
 const initScheduledJob = () => {
-  const scheduledJob = cronJob.schedule("* 17 * * *", async () => {
-    console.log("Tarefa finalizada");
+  const scheduledJob = cronJob.schedule("0 11 * * *", async () => {
     const today = new Date().setHours(0, 0, 0, 0);
-    console.log(today.toISOString());
+    const bills = await connection("bills")
+      .where({ status: "Pendente" })
+      .select("id", "due_date");
+    const expiredBills = bills.filter((bill) => {
+      return ++bill.due_date < today;
+    });
+
+    const billsToChange = expiredBills.map((bill) => {
+      return bill.id;
+    });
+
     const updatedBillStatus = await connection("bills")
       .update({ status: "Vencida" })
-      .where({ status: "Pendente" })
-      .andWhere("due_date", "<", today.toISOString())
-      .returning("*");
-    console.log(updatedBillStatus);
+      .whereIn("id", billsToChange);
   });
   scheduledJob.start();
 };
