@@ -97,4 +97,34 @@ const deleteBill = async (req, res) => {
   }
 };
 
-module.exports = { registerBill, listClientBills, listAllBills, deleteBill };
+const getBillById = async (req, res) => {
+  const { billId } = req.params;
+  try {
+    const bill = await connection("bills")
+      .leftJoin("clients", "clients.id", "bills.client_id")
+      .where(" bills.id", "=", billId)
+      .select(
+        "clients.name",
+        "bills.id",
+        "bills.value",
+        "bills.due_date",
+        "bills.status",
+        "bills.description"
+      )
+      .returning("*");
+    if (!bill[0]) {
+      return res.status(404).json("Cobrança inexistente");
+    }
+    return res.json(dateFormatting(bill));
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
+};
+
+module.exports = {
+  registerBill,
+  listClientBills,
+  listAllBills,
+  deleteBill,
+  getBillById,
+};

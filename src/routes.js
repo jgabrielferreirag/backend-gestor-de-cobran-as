@@ -13,6 +13,7 @@ const {
   listClientBills,
   listAllBills,
   deleteBill,
+  getBillById,
 } = require("./controllers/bills");
 
 const router = express();
@@ -38,5 +39,6 @@ router.get("/clientes/:clientId/cobrancas", listClientBills); //listar todas as 
 
 router.get("/cobrancas", listAllBills); //listar todas as cobranças da empresa
 router.delete("/cobrancas/:billId", deleteBill);
+router.get("/cobrancas/:billId", getBillById);
 
 module.exports = router;
