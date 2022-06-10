@@ -127,14 +127,18 @@ const editBill = async (req, res) => {
     await schemaEditBill.validate(req.body);
     const { billId } = req.params;
     const { status, due_date, description, value } = req.body;
+    const splitDate = due_date.split("/");
+    const formattedDate =
+      splitDate[2] + "-" + splitDate[1] + "-" + splitDate[0];
     const editedBill = await connection("bills")
       .update({
         status,
-        due_date,
+        due_date: formattedDate,
         description,
         value,
       })
       .where({ id: billId });
+
     return res.json("Boleto atualizado com sucesso");
   } catch (error) {
     return res.status(500).json(error.message);
