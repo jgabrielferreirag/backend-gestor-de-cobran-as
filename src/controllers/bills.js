@@ -138,6 +138,7 @@ const editBill = async (req, res) => {
         value,
       })
       .where({ id: billId });
+
     return res.json("Boleto atualizado com sucesso");
   } catch (error) {
     return res.status(500).json(error.message);
