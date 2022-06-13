@@ -1,7 +1,7 @@
 const connection = require("../services/database/connection");
 const schemaRegisterBill = require("../validations/schemaRegisterBill");
 const schemaEditBill = require("../validations/schemaEditBill");
-const generateId = require("../utils/billIdGenerator");
+const generateId = require("../utils/idGenerator");
 const dateFormatting = require("../utils/dateFormatting");
 const currencyFormatting = require("../utils/currencyFormatting");
 

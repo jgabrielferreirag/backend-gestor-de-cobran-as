@@ -2,6 +2,7 @@ const connection = require("../services/database/connection");
 const schemaEditClient = require("../validations/schemaEditClient");
 const schemaRegisterClient = require("../validations/SchemaRegisterClient");
 const formatCellphone = require("../utils/cellphoneFormatting");
+const generateId = require("../utils/idGenerator");
 
 const registerClient = async (req, res) => {
   try {
@@ -34,8 +35,18 @@ const registerClient = async (req, res) => {
       return res.status(400).json("Este CPF já está cadastrado");
     }
 
+    let id = generateId();
+    while (true) {
+      const repeatedId = await connection("clients").where({ id }).first();
+      if (!repeatedId) {
+        break;
+      }
+      id = generateId();
+    }
+
     const clientRegistered = await connection("clients")
       .insert({
+        id,
         name,
         email,
         cpf,
