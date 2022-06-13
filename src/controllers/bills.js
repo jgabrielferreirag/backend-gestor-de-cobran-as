@@ -1,6 +1,5 @@
 const connection = require("../services/database/connection");
-const schemaRegisterBill = require("../validations/schemaRegisterBill");
-const schemaEditBill = require("../validations/schemaEditBill");
+const schemaBill = require("../validations/schemaBill");
 const generateId = require("../utils/idGenerator");
 const dateFormatting = require("../utils/dateFormatting");
 const currencyFormatting = require("../utils/currencyFormatting");
@@ -9,7 +8,7 @@ const registerBill = async (req, res) => {
   const { clientId } = req.params;
 
   try {
-    await schemaRegisterBill.validate(req.body);
+    await schemaBill.validate(req.body);
 
     const { value, description, due_date, status } = req.body;
 
@@ -133,7 +132,7 @@ const getBillById = async (req, res) => {
 
 const editBill = async (req, res) => {
   try {
-    await schemaEditBill.validate(req.body);
+    await schemaBill.validate(req.body);
     const { billId } = req.params;
     const { status, due_date, description, value } = req.body;
     const splitDate = due_date.split("/");

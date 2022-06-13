@@ -3,6 +3,7 @@ const yup = require("yup");
 const schema = yup.object().shape({
   status: yup
     .string()
+    .oneOf(["Pendente", "Paga"], "Status de cobrança inválido")
     .required("É necessário informar se o boleto foi pago ou não"),
   value: yup.number().required("É necessário informar o valor do boleto"),
   due_date: yup
