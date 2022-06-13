@@ -3,9 +3,9 @@ const connection = require("../database/connection");
 
 const initScheduledJob = () => {
   const scheduledJob = cronJob.schedule(
-    "35 18 * * *",
+    "* 19 * * *",
     async () => {
-      console.log("entrou no loop");
+      console.log("job dos boletos");
       const today = new Date().setHours(0, 0, 0, 0);
       const bills = await connection("bills")
         .where({ status: "Pendente" })
