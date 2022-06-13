@@ -26,13 +26,22 @@ const registerBill = async (req, res) => {
     const formattedDate =
       splitDate[2] + "-" + splitDate[1] + "-" + splitDate[0];
 
+    let newStatus;
+
+    if (
+      new Date(formattedDate) < new Date().setHours(0, 0, 0, 0) &&
+      status === "Pendente"
+    ) {
+      newStatus = "Vencida";
+    }
+
     const billRegistered = await connection("bills").insert({
       id,
       client_id: clientId,
       value,
       description,
       due_date: formattedDate,
-      status,
+      status: newStatus,
     });
 
     if (!billRegistered) {
