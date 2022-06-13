@@ -3,7 +3,7 @@ const connection = require("../database/connection");
 
 const initScheduledJob = () => {
   const scheduledJob = cronJob.schedule(
-    "0 19 * * *",
+    process.env.BILL_SCHEDULE || "0 8 * * *",
     async () => {
       const today = new Date().setHours(0, 0, 0, 0);
       const bills = await connection("bills")
