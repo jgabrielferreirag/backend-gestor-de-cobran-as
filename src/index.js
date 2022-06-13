@@ -2,8 +2,8 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const routes = require("./routes");
-const billScheduledJob = require("./services/cron/billScheduler");
-const clientScheduledJob = require("./services/cron/clientScheduler");
+const billScheduledJob = require("./services/scheduler/billScheduler");
+const clientScheduledJob = require("./services/scheduler/clientScheduler");
 
 const app = express();
 
