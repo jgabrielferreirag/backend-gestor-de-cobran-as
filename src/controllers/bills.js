@@ -41,7 +41,7 @@ const registerBill = async (req, res) => {
       value,
       description,
       due_date: formattedDate,
-      status: newStatus,
+      status: newStatus ?? status,
     });
 
     if (!billRegistered) {
