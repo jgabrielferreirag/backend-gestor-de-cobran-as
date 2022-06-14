@@ -1,0 +1,625 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "CFinanças",
+    "description": "Documentação gerada pelo swagger-autogen para o Backend da aplicação web CFinanças"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Usuarios",
+      "description": "Endpoints"
+    },
+    {
+      "name": "Clientes",
+      "description": "Endpoints"
+    },
+    {
+      "name": "Login",
+      "description": "Endpoints"
+    },
+    {
+      "name": "Cobranças",
+      "description": "Endpoints"
+    }
+  ],
+  "schemes": ["http", "https"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/usuario": {
+      "post": {
+        "tags": ["Usuarios"],
+        "description": "Endpoint para cadastrar usuários",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any@gmail.com"
+                },
+                "password": {
+                  "example": "Minimo 6 caracteres"
+                },
+                "repeatPassword": {
+                  "example": "Minimo 6 caracteres"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Senha e/ou email incorretos"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Usuarios"],
+        "description": "Endpoint para editar usuários",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "body",
+            "type": "string",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any@gmail.com"
+                },
+                "password": {
+                  "example": "Minimo 6 caracteres"
+                },
+                "repeatPassword": {
+                  "example": "Minimo 6 caracteres"
+                },
+                "cpf": {
+                  "example": "Apenas 11 caracteres"
+                },
+                "cellphone": {
+                  "example": "Apenas 11 caracteres"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário atualizado com sucesso."
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Usuarios"],
+        "description": "Endpoint para listar dados do usuário logado",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Usuarios"
+            },
+            "description": "Usuário encontrado."
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": ["Login"],
+        "description": "Endpoint para obter Token de autenticação",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any@gmail.com"
+                },
+                "password": {
+                  "example": "Minimo 6 caracteres"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário autenticado com sucesso."
+          },
+          "401": {
+            "description": "Senha e/ou email incorretos"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/cliente": {
+      "post": {
+        "tags": ["Clientes"],
+        "description": "Endpoint para cadastrar clientes",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cliente encontrado.",
+            "schema": {
+              "$ref": "#/definitions/Clientes"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/clientes": {
+      "get": {
+        "tags": ["Clientes"],
+        "description": "Endpoint para listar todos os clientes",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "clientId",
+            "description": "ID do cliente.",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cliente encontrado.",
+            "schema": {
+              "$ref": "#/definitions/Clientes"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/clientes/{clientId}": {
+      "get": {
+        "tags": ["Clientes"],
+        "description": "Endpoint para listar cliente pelo ID",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do cliente."
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cliente encontrado.",
+            "schema": {
+              "$ref": "#/definitions/Clientes"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Clientes"],
+        "description": "Endpoint para editar cliente",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do cliente."
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/clientes/{clientId}/cobrancas": {
+      "post": {
+        "tags": ["Cobranças"],
+        "description": "Endpoint para cadastrar cobrança",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do cliente."
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cobrança encontrada.",
+            "schema": {
+              "$ref": "#/definitions/Cobranças"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Cobranças"],
+        "description": "Endpoint para listar cobranças de um certo cliente através do ID",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do cliente."
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cobrança encontrada.",
+            "schema": {
+              "$ref": "#/definitions/Cobranças"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/cobrancas": {
+      "get": {
+        "tags": ["Cobranças"],
+        "description": "Endpoint para listar todas as cobranças",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "billId",
+            "description": "ID da Cobrança.",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Cobranças"
+            },
+            "description": "Cobrança encontrada."
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/cobrancas/{billId}": {
+      "delete": {
+        "tags": ["Cobranças"],
+        "description": "Endpoint para deletar cobrança",
+        "parameters": [
+          {
+            "name": "billId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID da Cobrança."
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Cobranças"],
+        "description": "Endpoint para listar cobrança pelo ID",
+        "parameters": [
+          {
+            "name": "billId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID da Cobrança."
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cobrança encontrada.",
+            "schema": {
+              "$ref": "#/definitions/Cobranças"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Cobranças"],
+        "description": "Endpoint para editar cobrança",
+        "parameters": [
+          {
+            "name": "billId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID da Cobrança."
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "example": "any"
+                },
+                "due_date": {
+                  "example": "any"
+                },
+                "description": {
+                  "example": "any"
+                },
+                "value": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Usuarios": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Marcela"
+        },
+        "email": {
+          "type": "string",
+          "example": "marcela@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "213256"
+        },
+        "repeatPassword": {
+          "type": "string",
+          "example": "213256"
+        },
+        "cpf": {
+          "type": "string",
+          "example": "12345678910"
+        },
+        "cellphone": {
+          "type": "string",
+          "example": "12345678910"
+        }
+      },
+      "required": ["name", "email", "password"]
+    },
+    "Clientes": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Marcela"
+        },
+        "cpf": {
+          "type": "string",
+          "example": "12345678100"
+        },
+        "email": {
+          "type": "string",
+          "example": "marcela@gmail.com"
+        },
+        "cellphone": {
+          "type": "string",
+          "example": "11111111111"
+        },
+        "address": {
+          "type": "string",
+          "example": "Rua X"
+        },
+        "postal_code": {
+          "type": "string",
+          "example": "12345678"
+        },
+        "state": {
+          "type": "string",
+          "example": "RJ"
+        },
+        "city": {
+          "type": "string",
+          "example": "Rio de Janeiro"
+        },
+        "district": {
+          "type": "string",
+          "example": "Ipanema"
+        },
+        "complement": {
+          "type": "string",
+          "example": "6"
+        }
+      },
+      "required": ["name", "cpf", "email", "cellphone"]
+    },
+    "Cobranças": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "example": "Emprestimo"
+        },
+        "due_date": {
+          "type": "string",
+          "example": "10/06/2022"
+        },
+        "value": {
+          "type": "number",
+          "example": 230
+        },
+        "status": {
+          "type": "string",
+          "example": "Pendente"
+        }
+      },
+      "required": ["description", "due_date", "value"]
+    }
+  }
+}

@@ -5,6 +5,8 @@ const schemaEditUser = require("../validations/schemaEditUser");
 const returnInitials = require("../utils/nameManipulation");
 
 const signUpUser = async (req, res) => {
+  //#swagger.tags = ["Usuarios"]
+  //#swagger.description = 'Endpoint para cadastrar usuários
   try {
     await schemaSignUpUser.validate(req.body);
 
@@ -37,6 +39,8 @@ const signUpUser = async (req, res) => {
 };
 
 const editUser = async (req, res) => {
+  //#swagger.tags = ["Usuarios"]
+  //#swagger.description = 'Endpoint para editar usuários
   try {
     await schemaEditUser.validate(req.body);
 
@@ -89,7 +93,16 @@ const editUser = async (req, res) => {
 };
 
 const getUserById = async (req, res) => {
+  //#swagger.tags = ["Usuarios"]
+  //#swagger.description = 'Endpoint para listar dados do usuário logado
+
   const { user } = req;
+
+  /* #swagger.responses[200] = { 
+    schema: { $ref: "#/definitions/Usuarios" },
+    description: 'Usuário encontrado.' 
+  } */
+
   return res.json(user);
 };
 

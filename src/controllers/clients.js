@@ -5,6 +5,8 @@ const formatCellphone = require("../utils/cellphoneFormatting");
 const generateId = require("../utils/idGenerator");
 
 const registerClient = async (req, res) => {
+  //#swagger.tags = ["Clientes"]
+  //#swagger.description = 'Endpoint para cadastrar clientes
   try {
     await schemaRegisterClient.validate(req.body);
     const {
@@ -71,10 +73,18 @@ const registerClient = async (req, res) => {
 };
 
 const listAllClients = async (req, res) => {
+  //#swagger.tags = ["Clientes"]
+  //#swagger.description = 'Endpoint para listar todos os clientes
+
   try {
     const clientsList = await connection("clients")
       .select("id", "name", "cpf", "email", "cellphone", "client_status")
       .returning("*");
+
+    /* #swagger.responses[200] = { 
+    schema: { $ref: "#/definitions/Clientes" },
+    description: 'Cliente encontrado.' 
+    } */
 
     return res.status(200).json(clientsList);
   } catch (error) {
@@ -83,6 +93,10 @@ const listAllClients = async (req, res) => {
 };
 
 const getClientById = async (req, res) => {
+  //#swagger.tags = ["Clientes"]
+  //#swagger.description = 'Endpoint para listar cliente pelo ID
+  //#swagger.parameters['clientId'] = { description: 'ID do cliente.' }
+
   const { clientId } = req.params;
   try {
     const client = await connection("clients").where({ id: clientId }).first();
@@ -93,6 +107,12 @@ const getClientById = async (req, res) => {
 
     const formattedCellphone = formatCellphone(client.cellphone);
     client.cellphone = formattedCellphone;
+
+    /* #swagger.responses[200] = { 
+    schema: { $ref: "#/definitions/Clientes" },
+    description: 'Cliente encontrado.' 
+  } */
+
     return res.json(client);
   } catch (error) {
     return res.status(500).json(error.message);
@@ -100,6 +120,10 @@ const getClientById = async (req, res) => {
 };
 
 const editClient = async (req, res) => {
+  //#swagger.tags = ["Clientes"]
+  //#swagger.description = 'Endpoint para editar cliente
+  //#swagger.parameters['clientId'] = { description: 'ID do cliente.' }
+
   const { clientId } = req.params;
 
   try {

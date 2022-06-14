@@ -20,6 +20,7 @@ const {
 const router = express();
 
 router.get("/", async (req, res) => {
+  //#swagger.ignore = true
   return res.status(200).json("API Backend Bug as a Service");
 });
 
