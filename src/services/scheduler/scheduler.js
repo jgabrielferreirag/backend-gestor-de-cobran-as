@@ -1,3 +1,6 @@
+//função para atualizar o status do boleto e do cliente e
+//rodar no agendamento do Heroku Scheduler todo dia as 8 da manha
+
 const connection = require("../database/connection");
 
 const initScheduledJob = async () => {
