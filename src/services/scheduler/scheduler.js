@@ -16,12 +16,16 @@ const initScheduledJob = async () => {
     return bill.id;
   });
 
-  const updatedBillStatus = await connection("bills")
+  const updateBillStatus = await connection("bills")
     .update({ status: "Vencida" })
     .whereIn("id", billsToChange);
 
-  const updateClients = await connection.raw(
+  const defaulterClients = await connection.raw(
     "update clients set client_status = 'Inadimplente' from bills where clients.id = bills.client_id and bills.status = 'Vencida'"
+  );
+
+  const upToDateClients = await connection.raw(
+    "update clients set client_status = 'Em dia' from bills where clients.id = bills.client_id and bills.status != 'Vencida'"
   );
 };
 
