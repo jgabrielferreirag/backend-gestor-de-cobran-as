@@ -5,6 +5,9 @@ const dateFormatting = require("../utils/dateFormatting");
 const currencyFormatting = require("../utils/currencyFormatting");
 
 const registerBill = async (req, res) => {
+  //#swagger.tags = ["Cobranças"]
+  //#swagger.description = 'Endpoint para cadastrar cobrança
+
   const { clientId } = req.params;
 
   try {
@@ -54,6 +57,9 @@ const registerBill = async (req, res) => {
 };
 
 const listClientBills = async (req, res) => {
+  //#swagger.tags = ["Cobranças"]
+  //#swagger.description = 'Endpoint para listar cobranças de um certo cliente através do ID
+  //#swagger.parameters['clientId'] = { description: 'ID do cliente.' }
   const { clientId } = req.params;
   try {
     const clientBills = await connection("bills")
@@ -62,6 +68,11 @@ const listClientBills = async (req, res) => {
       })
       .select("id", "value", "due_date", "status", "description");
 
+    /* #swagger.responses[200] = { 
+    schema: { $ref: "#/definitions/Cobranças" },
+    description: 'Cobrança encontrada.' 
+    } */
+
     return res.json(currencyFormatting(dateFormatting(clientBills)));
   } catch (error) {
     return res.status(500).json(error.message);
@@ -69,6 +80,8 @@ const listClientBills = async (req, res) => {
 };
 
 const listAllBills = async (req, res) => {
+  //#swagger.tags = ["Cobranças"]
+  //#swagger.description = 'Endpoint para listar todas as cobranças
   try {
     const billsList = await connection("bills")
       .leftJoin("clients", "clients.id", "bills.client_id")
@@ -80,6 +93,12 @@ const listAllBills = async (req, res) => {
         "bills.status",
         "bills.description"
       );
+
+    /* #swagger.responses[200] = { 
+    schema: { $ref: "#/definitions/Cobranças" },
+    description: 'Cobrança encontrada.' 
+    } */
+
     return res.json(currencyFormatting(dateFormatting(billsList)));
   } catch (error) {
     return res.status(500).json(error.message);
@@ -87,6 +106,9 @@ const listAllBills = async (req, res) => {
 };
 
 const deleteBill = async (req, res) => {
+  //#swagger.tags = ["Cobranças"]
+  //#swagger.description = 'Endpoint para deletar cobrança
+  //#swagger.parameters['billId] = { description: 'ID da Cobrança.' }
   const { billId } = req.params;
   try {
     const deletedBill = await connection("bills")
@@ -107,6 +129,9 @@ const deleteBill = async (req, res) => {
 };
 
 const getBillById = async (req, res) => {
+  //#swagger.tags = ["Cobranças"]
+  //#swagger.description = 'Endpoint para listar cobrança pelo ID
+  //#swagger.parameters['billId] = { description: 'ID da Cobrança.' }
   const { billId } = req.params;
   try {
     const bill = await connection("bills")
@@ -124,6 +149,12 @@ const getBillById = async (req, res) => {
     if (!bill[0]) {
       return res.status(404).json("Cobrança inexistente");
     }
+
+    /* #swagger.responses[200] = { 
+    schema: { $ref: "#/definitions/Cobranças" },
+    description: 'Cobrança encontrada.' 
+    } */
+
     return res.json(currencyFormatting(dateFormatting(bill))[0]);
   } catch (error) {
     return res.status(500).json(error.message);
@@ -131,6 +162,9 @@ const getBillById = async (req, res) => {
 };
 
 const editBill = async (req, res) => {
+  //#swagger.tags = ["Cobranças"]
+  //#swagger.description = 'Endpoint para editar cobrança
+  //#swagger.parameters['billId] = { description: 'ID da Cobrança.' }
   try {
     await schemaBill.validate(req.body);
     const { billId } = req.params;

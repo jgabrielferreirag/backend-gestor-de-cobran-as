@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon ./src/index.js",
-    "start": "node ./src/index.js"
+    "start": "node ./src/index.js",
+    "swagger-autogen": "node ./src/swagger.js"
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,8 @@
     "knex": "^2.0.0",
     "node-cron": "^3.0.1",
     "pg": "^8.7.3",
+    "swagger-autogen": "^2.21.3",
+    "swagger-ui-express": "^4.4.0",
     "uuid": "^8.3.2",
     "yup": "^0.32.11",
     "yup-locales": "^1.2.4"

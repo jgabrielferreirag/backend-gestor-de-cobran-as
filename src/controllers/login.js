@@ -5,6 +5,9 @@ const returnInitials = require("../utils/nameManipulation");
 const schemaLoginUser = require("../validations/schemaLoginUser");
 
 const login = async (req, res) => {
+  //#swagger.tags = ["Login"]
+  //#swagger.description = 'Endpoint para obter Token de autenticação
+
   try {
     await schemaLoginUser.validate(req.body);
 
