@@ -187,10 +187,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Cliente encontrado.",
-            "schema": {
-              "$ref": "#/definitions/Clientes"
-            }
+            "description": "Cliente cadastrado com sucesso."
           },
           "401": {
             "description": "Unauthorized"
