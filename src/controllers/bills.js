@@ -45,7 +45,13 @@ const registerBill = async (req, res) => {
       due_date: formattedDate,
       status: newStatus ?? status,
     });
-
+    if (newStatus === "Vencida") {
+      const updateClient = await connection("clients")
+        .update({
+          status: "Inadimplente",
+        })
+        .where({ id: clientId });
+    }
     if (!billRegistered) {
       return res.status(400).json("Não foi possivel cadastrar cobrança");
     }
