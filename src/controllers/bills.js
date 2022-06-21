@@ -48,7 +48,7 @@ const registerBill = async (req, res) => {
     if (newStatus === "Vencida") {
       const updateClient = await connection("clients")
         .update({
-          status: "Inadimplente",
+          client_status: "Inadimplente",
         })
         .where({ id: clientId });
     }
