@@ -9,8 +9,10 @@ CREATE TABLE users (
   cellphone VARCHAR(14)
 );
 
+/* CREATE TYPE client_situation AS ENUM ('Em dia', 'Inadimplente'); */
+
 CREATE TABLE clients (
-  id SERIAL PRIMARY KEY,
+  id INT PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
   cpf VARCHAR(11) UNIQUE NOT NULL,
   email VARCHAR(100) UNIQUE NOT NULL,
@@ -20,17 +22,19 @@ CREATE TABLE clients (
   postal_code VARCHAR(8),
   district VARCHAR(50),
   city VARCHAR(30),
-  state CHAR(2)
+  state CHAR(2),
+  client_status client_situation DEFAULT 'Em dia'
 );
 
-/* CREATE TYPE situation AS ENUM ('Pago', 'Em aberto'); */
+/* CREATE TYPE situation AS ENUM ('Paga', 'Pendente', 'Vencida'); */
 
 CREATE TABLE bills (
-  id UUID PRIMARY KEY,
-  client_id INT REFERENCES clients (id),
-  value INTEGER NOT NULL,
+  id INT PRIMARY KEY,
+  client_id INT REFERENCES clients (id) NOT NULL,
+  value NUMERIC(12,2) NOT NULL,
   due_date DATE NOT NULL,
-  status situation DEFAULT 'Em aberto'
+  status situation DEFAULT 'Pendente',
+  description text NOT NULL
 );
 
 

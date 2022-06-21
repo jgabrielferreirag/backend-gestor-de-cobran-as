@@ -2,18 +2,46 @@ const express = require("express");
 const { signUpUser, editUser, getUserById } = require("./controllers/users");
 const { login } = require("./controllers/login");
 const { verifyLogin } = require("./middlewares/verifyLogin");
-const { registerClient, listAllClients } = require("./controllers/clients");
+const {
+  registerClient,
+  listAllClients,
+  getClientById,
+  editClient,
+} = require("./controllers/clients");
+const {
+  registerBill,
+  listClientBills,
+  listAllBills,
+  deleteBill,
+  getBillById,
+  editBill,
+} = require("./controllers/bills");
 
 const router = express();
 
-router.post("/usuario", signUpUser);
-router.post("/login", login);
+router.get("/", async (req, res) => {
+  //#swagger.ignore = true
+  return res.status(200).json("API Backend Bug as a Service");
+});
 
-router.use(verifyLogin);
+router.post("/usuario", signUpUser); //cadastrar usuario
+router.post("/login", login); //logar usuario
 
-router.put("/usuario", editUser);
-router.get("/usuario", getUserById);
-router.post("/cliente", registerClient);
-router.get("/clientes", listAllClients);
+router.use(verifyLogin); //middleware de verificação de autenticação
+
+router.put("/usuario", editUser); //editar usuario
+router.get("/usuario", getUserById); //listar dados do usuario
+
+router.post("/cliente", registerClient); //cadastrar cliente
+router.get("/clientes", listAllClients); //listar todos os clientes
+router.get("/clientes/:clientId", getClientById); //listar dados de cliente especifico pelo ID
+router.put("/clientes/:clientId", editClient); //editar dados de cliente especifico pelo ID
+router.post("/clientes/:clientId/cobrancas", registerBill); //cadastrar cobrança
+router.get("/clientes/:clientId/cobrancas", listClientBills); //listar todas as cobranças de um cliente especifico
+
+router.get("/cobrancas", listAllBills); //listar todas as cobranças da empresa
+router.delete("/cobrancas/:billId", deleteBill); //deletar cobrança pelo billId
+router.get("/cobrancas/:billId", getBillById); // listar dados da cobrança pelo billId
+router.put("/cobrancas/:billId", editBill); // editar dados da cobrança pelo billId
 
 module.exports = router;

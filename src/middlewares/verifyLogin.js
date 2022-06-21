@@ -22,7 +22,6 @@ const verifyLogin = async (req, res, next) => {
           "Para acessar este recurso um token de autenticação válido deve ser enviado.",
       });
     }
-
     const { password: _, ...userData } = signedUser;
 
     req.user = userData;
